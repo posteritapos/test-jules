@@ -1,173 +1,148 @@
-# Simple Node.js App
+# Todo List API
 
-This is a basic Node.js application using the Express framework.
+A simple RESTful API for managing a todo list. This project is built with Node.js and Express.
 
-## Prerequisites
+## Features
 
-- Node.js (version X.X.X or higher recommended)
-- npm (usually comes with Node.js)
+- Create, Read, Update, and Delete (CRUD) operations for todos.
+- In-memory data storage.
+- Comprehensive test suite using Jest and Supertest.
 
 ## Getting Started
 
+### Prerequisites
+
+- Node.js (v12 or higher recommended)
+- npm
+
+### Installation
+
 1. Clone the repository:
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/posteritapos/test-jules.git
    ```
 2. Navigate to the project directory:
    ```bash
-   cd <project_directory>
+   cd test-jules
    ```
-3. Install dependencies:
+3. Install the dependencies:
    ```bash
    npm install
    ```
-4. Start the server:
-   ```bash
-   npm start
-   ```
-5. Open your browser and go to `http://localhost:3000` to see the "Hello World!" message.
 
-## Available Scripts
+### Running the Application
 
-- `npm start`: Starts the application.
-- `npm test`: Runs the automated tests (currently facing environment issues with module resolution).
+To start the server, run the following command:
 
-## Project Structure
+```bash
+npm start
+```
 
-- `index.js`: The main entry point of the application.
-- `package.json`: Contains project metadata and dependencies.
-- `package-lock.json`: Records the exact versions of dependencies.
-- `node_modules/`: Directory where dependencies are installed (should be in `.gitignore`).
-- `tests/api.test.js`: Contains API tests.
-- `jest.config.js`: Configuration file for Jest.
+The server will start on `http://localhost:3000`.
+
+### Running the Tests
+
+To run the automated tests, use:
+
+```bash
+npm test
+```
 
 ## API Endpoints
 
-All request and response bodies are in JSON format.
+The API provides the following endpoints:
 
-### `POST /todos`
-- **Description:** Creates a new todo item.
-- **Request Body:**
-  ```json
+### Create a Todo
+
+- **POST** `/todos`
+- Creates a new todo item.
+
+**Request Body:**
+
+```json
+{
+  "task": "My new todo task"
+}
+```
+
+**Example Response:**
+
+```json
+{
+  "id": 1,
+  "task": "My new todo task"
+}
+```
+
+### Get All Todos
+
+- **GET** `/todos`
+- Retrieves all todo items.
+
+**Example Response:**
+
+```json
+[
   {
-    "task": "Your new todo description"
-  }
-  ```
-- **Success Response:**
-  - **Code:** 201 Created
-  - **Content:** The created todo object with an `id` and `task`.
-    ```json
-    {
-      "id": 1,
-      "task": "Your new todo description"
-    }
-    ```
-- **Error Response:**
-  - **Code:** 400 Bad Request
-  - **Content:** If `task` is missing in the request body.
-    ```json
-    {
-      "message": "Task is required"
-    }
-    ```
-
-### `GET /todos`
-- **Description:** Retrieves a list of all todo items.
-- **Success Response:**
-  - **Code:** 200 OK
-  - **Content:** An array of todo objects.
-    ```json
-    [
-      {
-        "id": 1,
-        "task": "First todo"
-      },
-      {
-        "id": 2,
-        "task": "Second todo"
-      }
-    ]
-    ```
-    (The array will be empty `[]` if no todos exist.)
-
-### `GET /todos/:id`
-- **Description:** Retrieves a specific todo item by its unique ID.
-- **URL Parameters:**
-  - `id` (integer, required): The ID of the todo to retrieve.
-- **Success Response:**
-  - **Code:** 200 OK
-  - **Content:** The todo object.
-    ```json
-    {
-      "id": 1,
-      "task": "Specific todo"
-    }
-    ```
-- **Error Response:**
-  - **Code:** 404 Not Found
-  - **Content:** If no todo with the specified ID exists.
-    ```json
-    {
-      "message": "Todo not found"
-    }
-    ```
-
-### `PUT /todos/:id`
-- **Description:** Updates an existing todo item by its ID.
-- **URL Parameters:**
-  - `id` (integer, required): The ID of the todo to update.
-- **Request Body:**
-  ```json
+    "id": 1,
+    "task": "My first todo"
+  },
   {
-    "task": "Updated todo description"
+    "id": 2,
+    "task": "My second todo"
   }
-  ```
-- **Success Response:**
-  - **Code:** 200 OK
-  - **Content:** The updated todo object.
-    ```json
-    {
-      "id": 1,
-      "task": "Updated todo description"
-    }
-    ```
-- **Error Response:**
-  - **Code:** 400 Bad Request
-  - **Content:** If `task` is missing in the request body.
-    ```json
-    {
-      "message": "Task is required"
-    }
-    ```
-  - **Code:** 404 Not Found
-  - **Content:** If no todo with the specified ID exists.
-    ```json
-    {
-      "message": "Todo not found"
-    }
-    ```
+]
+```
 
-### `DELETE /todos/:id`
-- **Description:** Deletes a specific todo item by its ID.
-- **URL Parameters:**
-  - `id` (integer, required): The ID of the todo to delete.
-- **Success Response:**
-  - **Code:** 200 OK
-  - **Content:** A confirmation message and the deleted todo.
-    ```json
-    {
-      "message": "Todo deleted successfully",
-      "todo": {
-        "id": 1,
-        "task": "Task to be deleted"
-      }
-    }
-    ```
-- **Error Response:**
-  - **Code:** 404 Not Found
-  - **Content:** If no todo with the specified ID exists.
-    ```json
-    {
-      "message": "Todo not found"
-    }
-    ```
+### Get a Specific Todo
+
+- **GET** `/todos/:id`
+- Retrieves a single todo item by its ID.
+
+**Example Response:**
+
+```json
+{
+  "id": 1,
+  "task": "My first todo"
+}
+```
+
+### Update a Todo
+
+- **PUT** `/todos/:id`
+- Updates an existing todo item.
+
+**Request Body:**
+
+```json
+{
+  "task": "My updated todo task"
+}
+```
+
+**Example Response:**
+
+```json
+{
+  "id": 1,
+  "task": "My updated todo task"
+}
+```
+
+### Delete a Todo
+
+- **DELETE** `/todos/:id`
+- Deletes a todo item by its ID.
+
+**Example Response:**
+
+```json
+{
+  "message": "Todo deleted successfully",
+  "todo": {
+    "id": 1,
+    "task": "My updated todo task"
+  }
+}
+```
