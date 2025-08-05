@@ -1,0 +1,16 @@
+<div style="text-align:center">
+  <h1>
+    Welcome to {{title}}!
+  </h1>
+</div>
+<div>
+  <input type="text" [(ngModel)]="newTodo" placeholder="Add a new todo" (keyup.enter)="addTodo()">
+  <button (click)="addTodo()">Add</button>
+</div>
+<ul>
+  <li *ngFor="let todo of todos">
+    {{todo.task}}
+    <button (click)="deleteTodo(todo.id)">Delete</button>
+  </li>
+</ul>
+<router-outlet></router-outlet>

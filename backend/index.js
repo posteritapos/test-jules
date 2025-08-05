@@ -1,17 +1,19 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 const port = 3000;
 
 // Middleware to parse JSON bodies
 app.use(express.json());
 
+// Serve static files from the Angular app
+app.use(express.static(path.join(__dirname, '../frontend/dist/frontend/browser')));
+
 // In-memory store for todos and ID counter
 let todos = [];
 let nextId = 1;
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+// API ROUTES
 
 // POST /todos - Create a new todo
 app.post('/todos', (req, res) => {
@@ -68,22 +70,24 @@ app.delete('/todos/:id', (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-  console.log('Todo API endpoints are now available:');
-  console.log('  POST /todos');
-  console.log('  GET /todos');
-  console.log('  GET /todos/:id');
-  console.log('  PUT /todos/:id');
-  console.log('  DELETE /todos/:id');
-});
-
 // POST /testing/reset - Reset data for testing purposes
 if (process.env.NODE_ENV === 'test') {
   app.post('/testing/reset', (req, res) => {
     todos = [];
     nextId = 1;
     res.status(200).send({ message: 'Data reset successfully' });
+  });
+}
+
+// All other routes should redirect to the Angular app
+app.get(/.*/, (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/frontend/browser/index.html'));
+});
+
+// Only start the server if this file is run directly
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`);
   });
 }
 
